@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace PhysicsEngineCore{
+namespace PhysicsEngineRender{
     public class VisualControl : FrameworkElement{
         private readonly VisualCollection _visuals;
 

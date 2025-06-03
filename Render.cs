@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 
-namespace PhysicsEngineCore{
+namespace PhysicsEngineRender{
     public class Render : FrameworkElement{
         public readonly VisualControl control = new VisualControl();
         private Stopwatch stopwatch = new Stopwatch();
