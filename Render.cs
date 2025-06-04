@@ -34,19 +34,19 @@ namespace PhysicsEngineRender{
 
         public void OnRendering(object? sender,EventArgs e){
             TimeSpan currentTime = this.stopwatch.Elapsed;
-            double deltaTime = (currentTime - _lastRenderTime).TotalSeconds;
+            double deltaTime = (currentTime - this._lastRenderTime).TotalSeconds;
 
             if(deltaTime < 1.0 / this._targetFps) return;
 
-            _frameCount++;
+            this._frameCount++;
 
-            if((currentTime - _lastFpsUpdateTime).TotalSeconds >= 1){
-                _fps = _frameCount / (currentTime - _lastFpsUpdateTime).TotalSeconds;
-                _lastFpsUpdateTime = currentTime;
-                _frameCount = 0;
+            if((currentTime - this._lastFpsUpdateTime).TotalSeconds >= 1){
+                this._fps = _frameCount / (currentTime - this._lastFpsUpdateTime).TotalSeconds;
+                this._lastFpsUpdateTime = currentTime;
+                this._frameCount = 0;
             }
 
-            _lastRenderTime = currentTime;
+            this._lastRenderTime = currentTime;
         }
 
         private static int CheckTargetFps(int targetFps){

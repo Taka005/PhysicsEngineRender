@@ -3,34 +3,34 @@ using System.Windows.Media;
 
 namespace PhysicsEngineRender{
     public class VisualControl : FrameworkElement{
-        private readonly VisualCollection _visuals;
+        private readonly VisualCollection visuals;
 
         public VisualControl(){
-            _visuals = new VisualCollection(this);
+            visuals = new VisualCollection(this);
         }
 
         public void AddVisual(Visual visual){
-            _visuals.Add(visual);
+            visuals.Add(visual);
         }
 
         public void RemoveVisual(Visual visual){
-            if(_visuals.Contains(visual)){
-                _visuals.Remove(visual);
+            if(visuals.Contains(visual)){
+                visuals.Remove(visual);
             }
         }
 
         public void ClearVisuals(){
-            _visuals.Clear();
+            visuals.Clear();
         }
 
         protected override int VisualChildrenCount{
             get{
-               return _visuals.Count;
+               return visuals.Count;
             }
         }
 
         protected override Visual GetVisualChild(int index){
-            return _visuals[index];
+            return visuals[index];
         }
     }
 }
