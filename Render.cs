@@ -1,5 +1,5 @@
 ﻿using PhysicsEngineCore.Objects;
-using PhysicsEngineRender.Visuals;
+using PhysicsEngineRender.Views;
 using System.Windows.Media;
 
 namespace PhysicsEngineRender{
@@ -51,8 +51,12 @@ namespace PhysicsEngineRender{
 
                 if(this.objectVisuals.TryGetValue(obj.id, out DrawingVisual? visual)) {
                     if(visual is CircleVisual circleVisual) {
+                        circleVisual.UpdateDrawing();
+                    } else if(visual is SquareVisual squareVisual) {
+                        squareVisual.UpdateDrawing();
+                    } else if(visual is RopeVisual ropeVisual){
+                        ropeVisual.UpdateDrawing();
                     }
-                    // 他のオブジェクトも追加
                 }
             });
         }
@@ -63,15 +67,25 @@ namespace PhysicsEngineRender{
         private DrawingVisual? CreateVisualForObject(IObject obj) {
             if(obj is Circle circle) {
                 return new CircleVisual(circle);
+            }else if(obj is Rope rope) {
+                return new RopeVisual(rope);
+            }else if(obj is Square square) {
+                return new SquareVisual(square);
             }
-            // else if (obj is Rope rope)
-            // {
-            //     return new RopeVisual(rope);
-            // }
-            // else if (obj is Square square)
-            // {
-            //     return new SquareVisual(square);
-            // }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 地面の種類に基づいて適切なDrawingVisualを作成
+        /// </summary>
+        private DrawingVisual? CreateVisualForGround(IGround obj) {
+            if(obj is Line line) {
+                return new LineVisual(line);
+            }else if(obj is Curve curve) {
+                return new CurveVisual(curve);
+            }
+
             return null;
         }
     }

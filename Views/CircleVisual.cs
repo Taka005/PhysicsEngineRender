@@ -4,12 +4,12 @@ using System.Windows.Threading;
 using PhysicsEngineCore.Objects;
 using PhysicsEngineCore.Utils;
 
-namespace PhysicsEngineRender.Visuals{
+namespace PhysicsEngineRender.Views{
     class CircleVisual : DrawingVisual{
         private readonly Circle objectData;
         private Brush brush;
         private Pen pen;
-        private Dispatcher dispatcher;
+        private readonly Dispatcher dispatcher;
 
         public CircleVisual(Circle objectData) {
             this.objectData = objectData;
