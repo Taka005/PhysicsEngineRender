@@ -1,58 +1,78 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using PhysicsEngineCore.Objects;
+using PhysicsEngineRender.Visuals;
+using System.Windows.Media;
 
 namespace PhysicsEngineRender{
-    public class Render12 : FrameworkElement{
-        public readonly VisualControl control = new VisualControl();
-        private Stopwatch stopwatch = new Stopwatch();
-        private TimeSpan _lastRenderTime = TimeSpan.Zero;
-        private TimeSpan _lastFpsUpdateTime = TimeSpan.Zero;
-        private int _frameCount = 0;
-        private double _fps = 0;
-        private int _targetFps;
+    public class Render {
+        public VisualCollection visuals;
 
-        public Render12(int targetFps = 60){
-            this._targetFps = CheckTargetFps(targetFps);
+        private readonly Dictionary<string, DrawingVisual> objectVisuals = [];
 
-             this.stopwatch.Start();
+        public Render() {
+            this.visuals = new VisualCollection(null);
         }
 
-        public int fps{
-            get{
-                return (int)this._fps;
+        /// <summary>
+        /// レンダリング対象のVisualCollectionを設定します
+        /// このメソッドはUIスレッドで呼び出される必要があります
+        /// </summary>
+        public void SetVisualCollection(VisualCollection visualCollection){
+            this.visuals = visualCollection;
+
+            foreach(var visual in this.objectVisuals.Values){
+                this.visuals.Add(visual);
             }
         }
 
-         public int targetFps{
-            get{
-                return this._targetFps;
-            }
-            set{
-                this._targetFps = CheckTargetFps(value);
-            }
+
+        /// <summary>
+        /// 物理エンジンのオブジェクトデータを受け取り、描画を更新します
+        /// このメソッドはUIスレッドで呼び出される必要があります
+        /// </summary>
+        /// <param name="objects">描画するIObjectのリスト</param>
+        public void UpdateAndDraw(List<IObject> objects) {
+            HashSet<string> currentObjectIds = [.. objects.Select(o => o.id)];
+            List<string>? visualsToRemove = this.objectVisuals.Keys.Where(id => !currentObjectIds.Contains(id)).ToList();
+
+            visualsToRemove.ForEach(id =>{
+                this.visuals.Remove(this.objectVisuals[id]);
+                this.objectVisuals.Remove(id);
+            });
+
+            objects.ForEach(obj => {
+                if(!this.objectVisuals.ContainsKey(obj.id)) {
+                    DrawingVisual? newVisual = this.CreateVisualForObject(obj);
+
+                    if(newVisual != null) {
+                        this.objectVisuals.Add(obj.id, newVisual);
+                        this.visuals.Add(newVisual);
+                    }
+                }
+
+                if(this.objectVisuals.TryGetValue(obj.id, out DrawingVisual? visual)) {
+                    if(visual is CircleVisual circleVisual) {
+                    }
+                    // 他のオブジェクトも追加
+                }
+            });
         }
 
-        public void OnRendering(object? sender,EventArgs e){
-            TimeSpan currentTime = this.stopwatch.Elapsed;
-            double deltaTime = (currentTime - this._lastRenderTime).TotalSeconds;
-
-            if(deltaTime < 1.0 / this._targetFps) return;
-
-            this._frameCount++;
-
-            if((currentTime - this._lastFpsUpdateTime).TotalSeconds >= 1){
-                this._fps = _frameCount / (currentTime - this._lastFpsUpdateTime).TotalSeconds;
-                this._lastFpsUpdateTime = currentTime;
-                this._frameCount = 0;
+        /// <summary>
+        /// オブジェクトの種類に基づいて適切なDrawingVisualを作成
+        /// </summary>
+        private DrawingVisual? CreateVisualForObject(IObject obj) {
+            if(obj is Circle circle) {
+                return new CircleVisual(circle);
             }
-
-            this._lastRenderTime = currentTime;
-        }
-
-        private static int CheckTargetFps(int targetFps){
-            if(targetFps < 0) throw new Exception("目標FPSは0以上である必要があります");
-
-            return targetFps;
+            // else if (obj is Rope rope)
+            // {
+            //     return new RopeVisual(rope);
+            // }
+            // else if (obj is Square square)
+            // {
+            //     return new SquareVisual(square);
+            // }
+            return null;
         }
     }
 }
