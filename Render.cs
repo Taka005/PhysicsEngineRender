@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace PhysicsEngineRender{
     public class Render : FrameworkElement {
-        public VisualCollection visuals;
+        private readonly VisualCollection visuals;
         private readonly Dictionary<string, DrawingVisual> objectVisuals = [];
 
         public Render() {
