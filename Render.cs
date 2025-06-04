@@ -13,19 +13,6 @@ namespace PhysicsEngineRender{
         }
 
         /// <summary>
-        /// レンダリング対象のVisualCollectionを設定します
-        /// このメソッドはUIスレッドで呼び出される必要があります
-        /// </summary>
-        public void SetVisualCollection(VisualCollection visualCollection){
-            this.visuals = visualCollection;
-
-            foreach(var visual in this.objectVisuals.Values){
-                this.visuals.Add(visual);
-            }
-        }
-
-
-        /// <summary>
         /// 物理エンジンのオブジェクトデータを受け取り、描画を更新します
         /// このメソッドはUIスレッドで呼び出される必要があります
         /// </summary>
