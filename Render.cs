@@ -32,7 +32,7 @@ namespace PhysicsEngineRender{
             }
         }
 
-        private void OnRendering(object? sender,EventArgs e){
+        public void OnRendering(object? sender,EventArgs e){
             TimeSpan currentTime = this.stopwatch.Elapsed;
             double deltaTime = (currentTime - _lastRenderTime).TotalSeconds;
 
