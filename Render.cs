@@ -2,7 +2,7 @@
 using System.Windows;
 
 namespace PhysicsEngineRender{
-    public class Render : FrameworkElement{
+    public class Render12 : FrameworkElement{
         public readonly VisualControl control = new VisualControl();
         private Stopwatch stopwatch = new Stopwatch();
         private TimeSpan _lastRenderTime = TimeSpan.Zero;
@@ -11,7 +11,7 @@ namespace PhysicsEngineRender{
         private double _fps = 0;
         private int _targetFps;
 
-        public Render(int targetFps = 60){
+        public Render12(int targetFps = 60){
             this._targetFps = CheckTargetFps(targetFps);
 
              this.stopwatch.Start();
