@@ -29,10 +29,10 @@ namespace PhysicsEngineRender{
         /// 物理エンジンのオブジェクトデータを受け取り、描画を更新します
         /// このメソッドはUIスレッドで呼び出される必要があります
         /// </summary>
-        /// <param name="objects">描画するIObjectのリスト</param>
-        public void UpdateAndDraw(List<IObject> objects) {
+        /// <param name="objects">描画するオブジェクトのリスト</param>
+        public void DrawObject(List<IObject> objects) {
             HashSet<string> currentObjectIds = [.. objects.Select(o => o.id)];
-            List<string>? visualsToRemove = this.objectVisuals.Keys.Where(id => !currentObjectIds.Contains(id)).ToList();
+            List<string>? visualsToRemove = [.. this.objectVisuals.Keys.Where(id => !currentObjectIds.Contains(id))];
 
             visualsToRemove.ForEach(id =>{
                 this.visuals.Remove(this.objectVisuals[id]);
@@ -54,8 +54,42 @@ namespace PhysicsEngineRender{
                         circleVisual.UpdateDrawing();
                     } else if(visual is SquareVisual squareVisual) {
                         squareVisual.UpdateDrawing();
-                    } else if(visual is RopeVisual ropeVisual){
+                    } else if(visual is RopeVisual ropeVisual) {
                         ropeVisual.UpdateDrawing();
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// 物理エンジンのオブジェクトデータを受け取り、描画を更新します
+        /// このメソッドはUIスレッドで呼び出される必要があります
+        /// </summary>
+        /// <param name="grounds">描画する地面のリスト</param>
+        public void DrawGround(List<IGround> grounds) {
+            HashSet<string> currentGrounds = [.. grounds.Select(o => o.id)];
+            List<string>? visualsToRemove = [.. this.objectVisuals.Keys.Where(id => !currentGrounds.Contains(id))];
+
+            visualsToRemove.ForEach(id => {
+                this.visuals.Remove(this.objectVisuals[id]);
+                this.objectVisuals.Remove(id);
+            });
+
+            grounds.ForEach(ground => {
+                if(!this.objectVisuals.ContainsKey(ground.id)) {
+                    DrawingVisual? newVisual = this.CreateVisualForGround(ground);
+
+                    if(newVisual != null) {
+                        this.objectVisuals.Add(ground.id, newVisual);
+                        this.visuals.Add(newVisual);
+                    }
+                }
+
+                if(this.objectVisuals.TryGetValue(ground.id, out DrawingVisual? visual)) {
+                    if(visual is LineVisual lineVisual) {
+                        lineVisual.UpdateDrawing();
+                    } else if(visual is CurveVisual curveVisual) {
+                        curveVisual.UpdateDrawing();
                     }
                 }
             });
