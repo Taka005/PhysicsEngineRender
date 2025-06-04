@@ -1,15 +1,15 @@
 ﻿using PhysicsEngineCore.Objects;
 using PhysicsEngineRender.Views;
+using System.Windows;
 using System.Windows.Media;
 
 namespace PhysicsEngineRender{
-    public class Render {
+    public class Render : FrameworkElement {
         public VisualCollection visuals;
-
         private readonly Dictionary<string, DrawingVisual> objectVisuals = [];
 
         public Render() {
-            this.visuals = new VisualCollection(null);
+            this.visuals = new VisualCollection(this);
         }
 
         /// <summary>
@@ -121,6 +121,16 @@ namespace PhysicsEngineRender{
             }
 
             return null;
+        }
+
+        protected override int VisualChildrenCount {
+            get {
+                return this.visuals.Count;
+            }
+        }
+
+        protected override Visual GetVisualChild(int index) {
+            return this.visuals[index];
         }
     }
 }
