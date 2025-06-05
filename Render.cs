@@ -1,5 +1,6 @@
 ﻿using PhysicsEngineCore.Objects;
 using PhysicsEngineRender.Views;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 
@@ -18,15 +19,17 @@ namespace PhysicsEngineRender{
         /// </summary>
         /// <param name="objects">描画するオブジェクトのリスト</param>
         public void DrawObject(List<IObject> objects) {
+            Debug.WriteLine(this.visuals.Count);
+            Debug.WriteLine(objects);
             HashSet<string> currentObjectIds = [.. objects.Select(o => o.id)];
             List<string>? visualsToRemove = [.. this.objectVisuals.Keys.Where(id => !currentObjectIds.Contains(id))];
 
-            visualsToRemove.ForEach(id =>{
+            foreach(string id in visualsToRemove) {
                 this.visuals.Remove(this.objectVisuals[id]);
                 this.objectVisuals.Remove(id);
-            });
+            }
 
-            objects.ForEach(obj => {
+            foreach(IObject obj in objects) {
                 if(!this.objectVisuals.ContainsKey(obj.id)) {
                     DrawingVisual? newVisual = this.CreateVisualForObject(obj);
 
@@ -45,7 +48,7 @@ namespace PhysicsEngineRender{
                         ropeVisual.UpdateDrawing();
                     }
                 }
-            });
+            }
         }
 
         /// <summary>
@@ -57,12 +60,12 @@ namespace PhysicsEngineRender{
             HashSet<string> currentGrounds = [.. grounds.Select(o => o.id)];
             List<string>? visualsToRemove = [.. this.objectVisuals.Keys.Where(id => !currentGrounds.Contains(id))];
 
-            visualsToRemove.ForEach(id => {
+            foreach(string id in visualsToRemove) {
                 this.visuals.Remove(this.objectVisuals[id]);
                 this.objectVisuals.Remove(id);
-            });
+            }
 
-            grounds.ForEach(ground => {
+            foreach(IGround ground in grounds) {
                 if(!this.objectVisuals.ContainsKey(ground.id)) {
                     DrawingVisual? newVisual = this.CreateVisualForGround(ground);
 
@@ -79,7 +82,7 @@ namespace PhysicsEngineRender{
                         curveVisual.UpdateDrawing();
                     }
                 }
-            });
+            }
         }
 
         /// <summary>
