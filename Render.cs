@@ -8,6 +8,7 @@ namespace PhysicsEngineRender{
     public class Render : FrameworkElement {
         private readonly VisualCollection visuals;
         private readonly Dictionary<string, DrawingVisual> objectVisuals = [];
+        private readonly Dictionary<string, DrawingVisual> groundVisuals = [];
 
         public Render() {
             this.visuals = new VisualCollection(this);
@@ -57,24 +58,24 @@ namespace PhysicsEngineRender{
         /// <param name="grounds">描画する地面のリスト</param>
         public void DrawGround(List<IGround> grounds) {
             HashSet<string> currentGrounds = [.. grounds.Select(o => o.id)];
-            List<string>? visualsToRemove = [.. this.objectVisuals.Keys.Where(id => !currentGrounds.Contains(id))];
+            List<string>? visualsToRemove = [.. this.groundVisuals.Keys.Where(id => !currentGrounds.Contains(id))];
 
             foreach(string id in visualsToRemove) {
-                this.visuals.Remove(this.objectVisuals[id]);
-                this.objectVisuals.Remove(id);
+                this.visuals.Remove(this.groundVisuals[id]);
+                this.groundVisuals.Remove(id);
             }
 
             foreach(IGround ground in grounds) {
-                if(!this.objectVisuals.ContainsKey(ground.id)) {
+                if(!this.groundVisuals.ContainsKey(ground.id)) {
                     DrawingVisual? newVisual = this.CreateVisualForGround(ground);
 
                     if(newVisual != null) {
-                        this.objectVisuals.Add(ground.id, newVisual);
+                        this.groundVisuals.Add(ground.id, newVisual);
                         this.visuals.Add(newVisual);
                     }
                 }
 
-                if(this.objectVisuals.TryGetValue(ground.id, out DrawingVisual? visual)) {
+                if(this.groundVisuals.TryGetValue(ground.id, out DrawingVisual? visual)) {
                     if(visual is LineVisual lineVisual) {
                         lineVisual.Draw();
                     } else if(visual is CurveVisual curveVisual) {
