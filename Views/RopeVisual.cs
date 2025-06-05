@@ -38,6 +38,14 @@ namespace PhysicsEngineRender.Views {
                         entity.radius,
                         entity.radius
                     );
+                } else {
+                    context.DrawEllipse(
+                        this.brush,
+                        null,
+                        new Point(entity.position.X, entity.position.Y),
+                        entity.radius,
+                        entity.radius
+                    );
                 }
 
                 if(this.objectData.entities.IndexOf(entity) == this.objectData.entities.Count - 1) {

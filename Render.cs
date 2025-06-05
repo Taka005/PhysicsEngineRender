@@ -1,6 +1,5 @@
 ﻿using PhysicsEngineCore.Objects;
 using PhysicsEngineRender.Views;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 
@@ -20,7 +19,6 @@ namespace PhysicsEngineRender{
         /// </summary>
         /// <param name="objects">描画するオブジェクトのリスト</param>
         public void DrawObject(List<IObject> objects) {
-            Debug.WriteLine(this.visuals.Count);
             HashSet<string> currentObjectIds = [.. objects.Select(o => o.id)];
             List<string>? visualsToRemove = [.. this.objectVisuals.Keys.Where(id => !currentObjectIds.Contains(id))];
 
