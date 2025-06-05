@@ -4,12 +4,12 @@ using PhysicsEngineCore.Objects;
 using PhysicsEngineCore.Utils;
 
 namespace PhysicsEngineRender.Views {
-    class SquareVisual : DrawingVisual {
+    class SquareVisual : BaseObjectVisual {
         private readonly Square objectData;
         private Brush brush;
         private Pen pen;
 
-        public SquareVisual(Square objectData) {
+        public SquareVisual(Square objectData):base(objectData) {
             this.objectData = objectData;
             this.brush = Utility.ParseColor(objectData.color);
             this.pen = new Pen(this.brush, 1);

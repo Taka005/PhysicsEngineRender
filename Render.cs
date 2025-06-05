@@ -5,6 +5,7 @@ using System.Windows.Media;
 
 namespace PhysicsEngineRender{
     public class Render : FrameworkElement {
+        public bool isDebugMode = false;
         private readonly VisualCollection visuals;
         private readonly Dictionary<string, DrawingVisual> objectVisuals = [];
         private readonly Dictionary<string, DrawingVisual> groundVisuals = [];
@@ -44,6 +45,10 @@ namespace PhysicsEngineRender{
                         squareVisual.Draw();
                     } else if(visual is RopeVisual ropeVisual) {
                         ropeVisual.Draw();
+                    }
+
+                    if(visual is BaseObjectVisual baseVisual && this.isDebugMode) {
+                        baseVisual.DrawVector();
                     }
                 }
             }

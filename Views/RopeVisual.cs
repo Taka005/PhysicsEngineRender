@@ -4,12 +4,12 @@ using PhysicsEngineCore.Objects;
 using PhysicsEngineCore.Utils;
 
 namespace PhysicsEngineRender.Views {
-    class RopeVisual : DrawingVisual {
+    class RopeVisual : BaseObjectVisual {
         private readonly Rope objectData;
         private Brush brush;
         private Pen pen;
    
-        public RopeVisual(Rope objectData) {
+        public RopeVisual(Rope objectData):base(objectData) {
             this.objectData = objectData;
             this.brush = Utility.ParseColor(objectData.color);
             this.pen = new Pen(this.brush, 1);

@@ -5,12 +5,12 @@ using PhysicsEngineCore.Objects;
 using PhysicsEngineCore.Utils;
 
 namespace PhysicsEngineRender.Views{
-    class CircleVisual : DrawingVisual{
+    class CircleVisual : BaseObjectVisual{
         private readonly Circle objectData;
         private Brush brush;
         private Pen pen;
 
-        public CircleVisual(Circle objectData) {
+        public CircleVisual(Circle objectData):base(objectData){
             this.objectData = objectData;
             this.brush = Utility.ParseColor(objectData.color);
             this.pen = new Pen(this.brush,1);
