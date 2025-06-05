@@ -20,7 +20,6 @@ namespace PhysicsEngineRender{
         /// <param name="objects">描画するオブジェクトのリスト</param>
         public void DrawObject(List<IObject> objects) {
             Debug.WriteLine(this.visuals.Count);
-            Debug.WriteLine(objects);
             HashSet<string> currentObjectIds = [.. objects.Select(o => o.id)];
             List<string>? visualsToRemove = [.. this.objectVisuals.Keys.Where(id => !currentObjectIds.Contains(id))];
 
@@ -41,11 +40,11 @@ namespace PhysicsEngineRender{
 
                 if(this.objectVisuals.TryGetValue(obj.id, out DrawingVisual? visual)) {
                     if(visual is CircleVisual circleVisual) {
-                        circleVisual.UpdateDrawing();
+                        circleVisual.Draw();
                     } else if(visual is SquareVisual squareVisual) {
-                        squareVisual.UpdateDrawing();
+                        squareVisual.Draw();
                     } else if(visual is RopeVisual ropeVisual) {
-                        ropeVisual.UpdateDrawing();
+                        ropeVisual.Draw();
                     }
                 }
             }
@@ -77,9 +76,9 @@ namespace PhysicsEngineRender{
 
                 if(this.objectVisuals.TryGetValue(ground.id, out DrawingVisual? visual)) {
                     if(visual is LineVisual lineVisual) {
-                        lineVisual.UpdateDrawing();
+                        lineVisual.Draw();
                     } else if(visual is CurveVisual curveVisual) {
-                        curveVisual.UpdateDrawing();
+                        curveVisual.Draw();
                     }
                 }
             }
