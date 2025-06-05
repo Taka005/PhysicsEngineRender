@@ -7,15 +7,11 @@ namespace PhysicsEngineRender.Views{
         private readonly IObject vectorObjectData = vectorObjectData;
         private readonly Pen vectorPen = new Pen(Brushes.Black, 1);
 
-        public void DrawVector() {
-            DrawingContext context = this.RenderOpen();
-
+        public void DrawVector(DrawingContext context){
             Point startPoint = new Point(this.vectorObjectData.position.X, this.vectorObjectData.position.Y);
             Point endPoint = new Point(this.vectorObjectData.position.X + this.vectorObjectData.velocity.X, this.vectorObjectData.position.X + this.vectorObjectData.velocity.Y);
 
             context.DrawLine(vectorPen, startPoint, endPoint);
-
-            context.Close();
         }
     }
 }

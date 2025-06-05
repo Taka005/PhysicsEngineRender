@@ -40,15 +40,11 @@ namespace PhysicsEngineRender{
 
                 if(this.objectVisuals.TryGetValue(obj.id, out DrawingVisual? visual)) {
                     if(visual is CircleVisual circleVisual) {
-                        circleVisual.Draw();
+                        circleVisual.Draw(this.isDebugMode);
                     } else if(visual is SquareVisual squareVisual) {
-                        squareVisual.Draw();
+                        squareVisual.Draw(this.isDebugMode);
                     } else if(visual is RopeVisual ropeVisual) {
-                        ropeVisual.Draw();
-                    }
-
-                    if(visual is BaseObjectVisual baseVisual && this.isDebugMode) {
-                        baseVisual.DrawVector();
+                        ropeVisual.Draw(this.isDebugMode);
                     }
                 }
             }

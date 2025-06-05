@@ -5,7 +5,7 @@ using PhysicsEngineCore.Objects;
 using PhysicsEngineCore.Utils;
 
 namespace PhysicsEngineRender.Views{
-    class CircleVisual : BaseObjectVisual{
+    class CircleVisual : BaseObjectVisual {
         private readonly Circle objectData;
         private Brush brush;
         private Pen pen;
@@ -16,7 +16,7 @@ namespace PhysicsEngineRender.Views{
             this.pen = new Pen(this.brush,1);
         }
 
-        public void Draw() {
+        public void Draw(bool vector = false) {
             DrawingContext context = this.RenderOpen();
 
             this.brush = Utility.ParseColor(this.objectData.color);
@@ -29,6 +29,10 @@ namespace PhysicsEngineRender.Views{
                 this.objectData.radius,
                 this.objectData.radius
             );
+
+            if(vector){
+                this.DrawVector(context);
+            }
 
             context.Close();
         }
