@@ -1,8 +1,6 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using PhysicsEngineCore.Objects;
-using PhysicsEngineCore.Utils;
 
 namespace PhysicsEngineRender.Views{
     class CircleVisual : BaseObjectVisual {

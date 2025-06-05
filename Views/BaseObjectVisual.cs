@@ -3,13 +3,13 @@ using System.Windows.Media;
 using PhysicsEngineCore.Objects;
 
 namespace PhysicsEngineRender.Views{
-    class BaseObjectVisual(IObject vectorObjectData) : DrawingVisual {
-        private readonly IObject vectorObjectData = vectorObjectData;
+    class BaseObjectVisual(IObject baseObjectData) : DrawingVisual {
+        private readonly IObject baseObjectData = baseObjectData;
         private readonly Pen vectorPen = new Pen(Brushes.Black, 1);
 
         public void DrawVector(DrawingContext context){
-            Point startPoint = new Point(this.vectorObjectData.position.X, this.vectorObjectData.position.Y);
-            Point endPoint = new Point(this.vectorObjectData.position.X + this.vectorObjectData.velocity.X, this.vectorObjectData.position.X + this.vectorObjectData.velocity.Y);
+            Point startPoint = new Point(this.baseObjectData.position.X, this.baseObjectData.position.Y);
+            Point endPoint = new Point(this.baseObjectData.position.X + this.baseObjectData.velocity.X, this.baseObjectData.position.X + this.baseObjectData.velocity.Y);
 
             context.DrawLine(vectorPen, startPoint, endPoint);
         }
