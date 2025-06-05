@@ -14,7 +14,7 @@ namespace PhysicsEngineRender.Views {
             this.pen = new Pen(this.brush, 1);
         }
 
-        public void Draw(bool vector = false) {
+        public void Draw() {
             DrawingContext context = this.RenderOpen();
 
             this.brush = Utility.ParseColor(this.objectData.color);
@@ -59,10 +59,6 @@ namespace PhysicsEngineRender.Views {
 
                 target = entity;
             });
-
-            if(vector) {
-                this.DrawVector(context);
-            }
 
             context.Close();
         }

@@ -4,14 +4,20 @@ using System.Windows;
 using System.Windows.Media;
 
 namespace PhysicsEngineRender{
+    /// <summary>
+    /// 物理エンジンのレンダークラス
+    /// </summary>
     public class Render : FrameworkElement {
         public bool isDebugMode = false;
         private readonly VisualCollection visuals;
         private readonly Dictionary<string, DrawingVisual> objectVisuals = [];
         private readonly Dictionary<string, DrawingVisual> groundVisuals = [];
+        private readonly OverlayVisual overlayVisual = new OverlayVisual();
 
         public Render() {
-            this.visuals = new VisualCollection(this);
+            this.visuals = new VisualCollection(this) {
+                this.overlayVisual
+            };
         }
 
         /// <summary>
@@ -22,6 +28,7 @@ namespace PhysicsEngineRender{
         public void DrawObject(List<IObject> objects) {
             HashSet<string> currentObjectIds = [.. objects.Select(o => o.id)];
             List<string>? visualsToRemove = [.. this.objectVisuals.Keys.Where(id => !currentObjectIds.Contains(id))];
+            List<VectorData> vectors = [];
 
             foreach(string id in visualsToRemove) {
                 this.visuals.Remove(this.objectVisuals[id]);
@@ -34,19 +41,32 @@ namespace PhysicsEngineRender{
 
                     if(newVisual != null) {
                         this.objectVisuals.Add(obj.id, newVisual);
-                        this.visuals.Add(newVisual);
+                        this.visuals.Insert(0,newVisual);
                     }
                 }
 
                 if(this.objectVisuals.TryGetValue(obj.id, out DrawingVisual? visual)) {
                     if(visual is CircleVisual circleVisual) {
-                        circleVisual.Draw(this.isDebugMode);
+                        circleVisual.Draw();
                     } else if(visual is SquareVisual squareVisual) {
-                        squareVisual.Draw(this.isDebugMode);
+                        squareVisual.Draw();
                     } else if(visual is RopeVisual ropeVisual) {
-                        ropeVisual.Draw(this.isDebugMode);
+                        ropeVisual.Draw();
+                    }
+
+                    if(this.isDebugMode && visual is BaseObjectVisual baseVisual) {
+                        vectors.Add(new VectorData(
+                            baseVisual.baseObjectData.position,
+                            baseVisual.baseObjectData.velocity
+                        ));
                     }
                 }
+            }
+
+            if(this.isDebugMode){
+                this.overlayVisual.UpdateVectors(vectors);
+            }else{
+                this.overlayVisual.Clear();
             }
         }
 
@@ -70,7 +90,7 @@ namespace PhysicsEngineRender{
 
                     if(newVisual != null) {
                         this.groundVisuals.Add(ground.id, newVisual);
-                        this.visuals.Add(newVisual);
+                        this.visuals.Insert(0,newVisual);
                     }
                 }
 
@@ -112,12 +132,20 @@ namespace PhysicsEngineRender{
             return null;
         }
 
+        /// <summary>
+        /// この要素の子ビジュアルの数を取得します
+        /// </summary>
         protected override int VisualChildrenCount {
             get {
                 return this.visuals.Count;
             }
         }
 
+        /// <summary>
+        /// 指定されたインデックスの子ビジュアルを取得します
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         protected override Visual GetVisualChild(int index) {
             return this.visuals[index];
         }
