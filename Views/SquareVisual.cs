@@ -20,34 +20,24 @@ namespace PhysicsEngineRender.Views {
             this.brush = Utility.ParseColor(this.objectData.color);
             this.pen = new Pen(this.brush, this.objectData.size/2);
 
-            Entity start = this.objectData.entities[0];
-            Entity end = this.objectData.entities[3];
-
-            this.objectData.entities.ForEach(entity => {
+            this.objectData.entities.ForEach(source => {
                 context.DrawEllipse(
-                    this.brush,
-                    null,
-                    new Point(entity.position.X, entity.position.Y),
-                    entity.radius,
-                    entity.radius
-                );
+                     this.brush,
+                     null,
+                     new Point(source.position.X, source.position.Y),
+                     source.radius,
+                     source.radius
+                 );
 
-                if(
-                    start.id == entity.id &&
-                    end.id == entity.id
-                ) return;
+                this.objectData.entities.ForEach(target => {
+                    if(source.id == target.id) return;
 
-                context.DrawLine(
-                    this.pen,
-                    new Point(start.position.X, start.position.Y),
-                    new Point(entity.position.X, entity.position.Y)
-                );
-
-                context.DrawLine(
-                    this.pen,
-                    new Point(end.position.X, end.position.Y),
-                    new Point(entity.position.X, entity.position.Y)
-                );
+                    context.DrawLine(
+                        this.pen,
+                        new Point(source.position.X, source.position.Y),
+                        new Point(target.position.X, target.position.Y)
+                    );
+                });
             });
 
             context.Close();
