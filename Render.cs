@@ -46,18 +46,22 @@ namespace PhysicsEngineRender{
                 }
 
                 if(this.objectVisuals.TryGetValue(obj.id, out DrawingVisual? visual)) {
+                    //if(!this.IsObjectInView(obj)) continue;
+
                     if(visual is CircleVisual circleVisual) {
                         circleVisual.Draw();
                     } else if(visual is SquareVisual squareVisual) {
                         squareVisual.Draw();
                     } else if(visual is RopeVisual ropeVisual) {
                         ropeVisual.Draw();
+                    }else if(visual is TriangleVisual triangleVisual) {
+                        triangleVisual.Draw();
                     }
 
-                    if(this.isDebugMode && visual is BaseObjectVisual baseVisual) {
+                    if(this.isDebugMode) {
                         vectors.Add(new VectorData(
-                            baseVisual.baseObjectData.position,
-                            baseVisual.baseObjectData.velocity
+                            obj.position,
+                            obj.velocity
                         ));
                     }
                 }
@@ -110,13 +114,15 @@ namespace PhysicsEngineRender{
         private DrawingVisual? CreateVisualForObject(IObject obj) {
             if(obj is Circle circle) {
                 return new CircleVisual(circle);
-            }else if(obj is Rope rope) {
+            } else if(obj is Rope rope) {
                 return new RopeVisual(rope);
-            }else if(obj is Square square) {
+            } else if(obj is Square square) {
                 return new SquareVisual(square);
+            } else if(obj is Triangle triangle) {
+                return new TriangleVisual(triangle);
             }
 
-            return null;
+                return null;
         }
 
         /// <summary>
@@ -130,6 +136,13 @@ namespace PhysicsEngineRender{
             }
 
             return null;
+        }
+
+        private bool IsObjectInView(IObject obj) {
+            return obj.entities.All(entity =>
+                entity.position.X - entity.radius >= 0 && entity.position.X + entity.radius <= this.ActualWidth &&
+                entity.position.Y - entity.radius >= 0 && entity.position.Y + entity.radius <= this.ActualHeight
+            );
         }
 
         /// <summary>

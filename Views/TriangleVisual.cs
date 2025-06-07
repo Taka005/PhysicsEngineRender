@@ -3,12 +3,12 @@ using System.Windows.Media;
 using PhysicsEngineCore.Objects;
 
 namespace PhysicsEngineRender.Views {
-    class SquareVisual : DrawingVisual {
-        private readonly Square objectData;
+    class TriangleVisual : DrawingVisual {
+        private readonly Triangle objectData;
         private Brush brush;
         private Pen pen;
 
-        public SquareVisual(Square objectData) {
+        public TriangleVisual(Triangle objectData) {
             this.objectData = objectData;
             this.brush = Utility.ParseColor(objectData.color);
             this.pen = new Pen(this.brush, 1);
@@ -18,7 +18,7 @@ namespace PhysicsEngineRender.Views {
             DrawingContext context = this.RenderOpen();
 
             this.brush = Utility.ParseColor(this.objectData.color);
-            this.pen = new Pen(this.brush, this.objectData.size/2);
+            this.pen = new Pen(this.brush, this.objectData.size / 2);
 
             this.objectData.entities.ForEach(source => {
                 context.DrawEllipse(

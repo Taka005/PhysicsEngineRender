@@ -3,12 +3,12 @@ using System.Windows.Media;
 using PhysicsEngineCore.Objects;
 
 namespace PhysicsEngineRender.Views {
-    class RopeVisual : BaseObjectVisual {
+    class RopeVisual : DrawingVisual {
         private readonly Rope objectData;
         private Brush brush;
         private Pen pen;
    
-        public RopeVisual(Rope objectData):base(objectData) {
+        public RopeVisual(Rope objectData){
             this.objectData = objectData;
             this.brush = Utility.ParseColor(objectData.color);
             this.pen = new Pen(this.brush, 1);

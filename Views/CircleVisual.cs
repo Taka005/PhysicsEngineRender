@@ -3,12 +3,12 @@ using System.Windows.Media;
 using PhysicsEngineCore.Objects;
 
 namespace PhysicsEngineRender.Views{
-    class CircleVisual : BaseObjectVisual {
+    class CircleVisual : DrawingVisual {
         private readonly Circle objectData;
         private Brush brush;
         private Pen pen;
 
-        public CircleVisual(Circle objectData):base(objectData){
+        public CircleVisual(Circle objectData){
             this.objectData = objectData;
             this.brush = Utility.ParseColor(objectData.color);
             this.pen = new Pen(this.brush,1);
